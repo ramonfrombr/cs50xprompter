@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from database import db
-from werkzeug.security import generate_password_hash, check_password_hash
+from app import bcrypt
 
 
 class User(db.Model):
@@ -16,10 +16,11 @@ class User(db.Model):
     scripts = db.relationship('Script', backref='author', lazy=True)
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = bcrypt.generate_password_hash(
+            password).decode("utf-8")
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return f'<User {self.username}>'
