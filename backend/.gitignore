@@ -1,0 +1,107 @@
+# ==================================
+# Python
+# ==================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+venv/
+.env/
+.venv/
+ENV/
+env/
+
+# Environment variables
+*.env
+.envrc
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==================================
+# Flask
+# ==================================
+instance/
+.werkzeug/
+
+# SQLite database (dev only)
+*.db
+*.sqlite3
+
+# Migrations (track scripts, ignore caches)
+migrations/__pycache__/
+migrations/*.pyc
+
+# Logs
+*.log
+
+# ==================================
+# Testing / Coverage
+# ==================================
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ==================================
+# Editors / IDEs
+# ==================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# ==================================
+# Docker
+# ==================================
+# Ignore local docker-compose overrides
+docker-compose.override.yml
+
+# Ignore local build artifacts
+.docker/
+docker-data/
+docker-volumes/
+
+# Ignore container logs
+*.pid
+*.seed
+*.pid.lock
+
+# If you mount volumes for uploads or tmp
+uploads/
+tmp/
+
+teleprompter.db
