@@ -1,0 +1,83 @@
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.venv/
+ENV/
+env/
+
+# Byte-compiled / optimized / DLL files
+*.so
+
+# ============================================
+# Flask / App
+# ============================================
+instance/
+.werkzeug/
+
+# SQLite (dev only — don’t ship with image)
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# ============================================
+# Packaging / Build
+# ============================================
+build/
+dist/
+.eggs/
+*.egg-info/
+*.egg
+
+# ============================================
+# Testing / Coverage
+# ============================================
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# ============================================
+# Git / Editors
+# ============================================
+.git/
+.gitignore
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ============================================
+# Docker
+# ============================================
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+.docker/
+docker-data/
+docker-volumes/
+
+# ============================================
+# Misc
+# ============================================
+.DS_Store
+Thumbs.db
