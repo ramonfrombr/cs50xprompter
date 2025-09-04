@@ -12,6 +12,7 @@ export default function RegisterPage() {
   const router = useRouter();
 
   console.log("apiUrl >>> ", apiUrl);
+  console.log("NEXT_PUBLIC_API_URL >>>", process.env.NEXT_PUBLIC_API_URL);
 
   useEffect(() => {
     if (!loading && token) {
