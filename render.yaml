@@ -22,8 +22,6 @@ services:
     dockerfilePath: frontend/Dockerfile
     plan: free
     autoDeploy: true
-    dependsOn:
-      - Backend
-    dockerBuildArgs:
+    envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: https://backend-cs50x-prompter.onrender.com
+        value: https://<your-backend-service-name>.onrender.com
