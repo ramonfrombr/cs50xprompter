@@ -14,7 +14,7 @@ services:
       - key: FLASK_ENV
         value: production
       - key: DATABASE_URL
-        value: ${{ postgres-db.DATABASE_URL }} # Render injects this automatically
+        value: ${{ postgres-db.DATABASE_URL }}
 
   - type: web
     name: Frontend
