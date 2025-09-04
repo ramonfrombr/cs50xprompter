@@ -1,5 +1,5 @@
 databases:
-  - name: postgres-db
+  - name: Database
     plan: free
     region: oregon
 
@@ -14,13 +14,15 @@ services:
       - key: FLASK_ENV
         value: production
       - key: DATABASE_URL
-        value: ${{ postgres-db.DATABASE_URL }}
+        value: ${{ Database.DATABASE_URL }}
 
   - type: web
     name: Frontend
     env: node
     plan: free
     autoDeploy: true
+    buildCommand: npm run build
+    startCommand: npm start
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: https://backend-59ux.onrender.com
+        value: ${{ Backend.serviceUrl }}
