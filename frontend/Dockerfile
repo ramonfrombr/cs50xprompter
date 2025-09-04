@@ -1,10 +1,12 @@
-# Use official Node.js LTS as base image
+# -------------------------------------------
+# Build stage
+# -------------------------------------------
 FROM node:20-alpine AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and lock files
+# Copy package manifests
 COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
 
 # Install dependencies
@@ -13,36 +15,33 @@ RUN npm ci
 # Copy the rest of the source code
 COPY . .
 
-# Build-time argument for backend URL
-ARG NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-
-# Build the Next.js app
+# Build Next.js app
 RUN npm run build
 
 # -------------------------------------------
-# Production image
+# Production stage
+# -------------------------------------------
 FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Copy package.json and install only production deps
+# Copy package manifests
 COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
+
+# Install only production dependencies
 RUN npm ci --omit=dev
 
 # Copy built files from builder
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/next.config.js ./next.config.js
 
-# Expose port
+# Expose port 3000 (Render expects the service to listen here)
 EXPOSE 3000
 
 # Set NODE_ENV
 ENV NODE_ENV=production
-
-# Runtime environment variable (ensure frontend uses correct backend URL)
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
 # Start the Next.js app
 CMD ["npm", "start"]

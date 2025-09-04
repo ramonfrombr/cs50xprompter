@@ -1,13 +1,5 @@
-# ============================================
-# Base image
-# ============================================
+# Use official Python slim image
 FROM python:3.10-slim
-
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    FLASK_ENV=production \
-    FLASK_APP=wsgi.py
 
 # Set working directory
 WORKDIR /app
@@ -18,22 +10,21 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install pipenv/poetry if needed
-RUN pip install --upgrade pip
-
-# Copy dependencies first (for caching)
+# Copy only requirements first (for caching)
 COPY requirements.txt .
 
-# Install dependencies (with eventlet for SocketIO)
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Copy application files
+# Copy the rest of the application
 COPY . .
 
-# Expose port
+# Expose the port your Flask app runs on
 EXPOSE 5000
 
-# ============================================
-# Run the app with eventlet (SocketIO friendly)
-# ============================================
+# Set environment variable
+ENV FLASK_ENV=production
+
+# Start the app
 CMD ["python", "wsgi.py"]
