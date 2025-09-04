@@ -22,6 +22,7 @@ def create_app():
     CORS(app)
 
     # Initialize extensions
+    bcrypt.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
     socketio.init_app(app)
