@@ -7,13 +7,13 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package.json and lock files
-COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
+COPY frontend/package.json frontend/package-lock.json* frontend/yarn.lock* frontend/pnpm-lock.yaml* ./
 
 # Install all dependencies (including dev)
 RUN npm ci
 
 # Copy source code
-COPY . .
+COPY frontend .
 
 # Build Next.js app
 RUN npm run build
@@ -26,7 +26,7 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 # Copy package.json and install only production dependencies
-COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
+COPY frontend/package.json frontend/package-lock.json* frontend/yarn.lock* frontend/pnpm-lock.yaml* ./
 RUN npm ci --omit=dev
 
 # Copy built files from builder
