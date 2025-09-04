@@ -2,6 +2,7 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "@/app/components/AuthContext";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/app/apiUrl";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -16,7 +17,7 @@ export default function LoginPage() {
   }, [token, loading, router]);
 
   const handleLogin = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+    const res = await fetch(`${apiUrl}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),

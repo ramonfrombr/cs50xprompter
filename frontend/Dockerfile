@@ -13,6 +13,10 @@ RUN npm ci
 # Copy the rest of the source code
 COPY . .
 
+# Build-time argument for backend URL
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 # Build the Next.js app
 RUN npm run build
 
@@ -36,6 +40,9 @@ EXPOSE 3000
 
 # Set NODE_ENV
 ENV NODE_ENV=production
+
+# Runtime environment variable (ensure frontend uses correct backend URL)
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
 # Start the Next.js app
 CMD ["npm", "start"]

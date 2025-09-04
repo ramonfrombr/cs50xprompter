@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/app/components/AuthContext";
+import { apiUrl } from "@/app/apiUrl";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
@@ -17,14 +18,11 @@ export default function RegisterPage() {
   }, [token, loading, router]);
 
   const handleRegister = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
-      }
-    );
+    const res = await fetch(`${apiUrl}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password }),
+    });
 
     const data = await res.json();
 

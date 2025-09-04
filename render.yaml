@@ -1,0 +1,49 @@
+# Render configuration for free plan
+
+# ----------------------
+# Postgres Database
+# ----------------------
+databases:
+  - name: postgres-db
+    plan: free
+    engine: POSTGRES
+    user: postgres
+    password: password
+    database: postgres_db
+    region: oregon
+
+# ----------------------
+# Backend (Flask)
+# ----------------------
+services:
+  - type: web
+    name: Backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: DATABASE_URL
+        value: postgres://postgres:password@postgres-db:5432/postgres_db
+    ports:
+      - 5000
+
+  # ----------------------
+  # Frontend (Next.js)
+  # ----------------------
+  - type: web
+    name: Frontend
+    env: docker
+    dockerfilePath: frontend/Dockerfile
+    plan: free
+    autoDeploy: true
+    # Use the public backend URL after it is deployed
+    dockerBuildArgs:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://your-backend.onrender.com
+    ports:
+      - 3000
+    dependsOn:
+      - Backend
