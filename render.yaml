@@ -1,7 +1,7 @@
 databases:
   - name: postgres-db
     plan: free
-    engine: POSTGRES
+    engine: postgres
     user: postgres
     password: password
     database: postgres_db
@@ -30,4 +30,4 @@ services:
       - Backend
     dockerBuildArgs:
       - key: NEXT_PUBLIC_API_URL
-        value: https://<backend-service-name>.onrender.com
+        value: https://backend-cs50x-prompter.onrender.com
