@@ -1,4 +1,5 @@
 import jwt
+from jwt import ExpiredSignatureError, InvalidTokenError
 from functools import wraps
 from datetime import datetime, timedelta, timezone
 from flask import Blueprint, jsonify, request
@@ -22,7 +23,7 @@ def register():
         return jsonify({"error": "Username already exists"}), 400
 
     if User.query.filter_by(email=email).first():
-        return jsonify({"error": "Username already exists"}), 400
+        return jsonify({"error": "Email already exists"}), 400
 
     user = User(username=username, email=email)
     user.set_password(password)
@@ -43,12 +44,9 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"error": "Invalid username or password"}), 401
 
-    token = jwt.encode(
-        {"user_id": user.id, "exp": datetime.now(
-            timezone.utc) + timedelta(hours=12)},
-        SECRET_KEY,
-        algorithm="HS256"
-    )
+    exp = datetime.now(timezone.utc) + timedelta(hours=12)
+    payload = {"user_id": user.id, "exp": int(exp.timestamp())}
+    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
     return jsonify({"token": token})
 
@@ -57,17 +55,19 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-        if "Authorization" in request.headers:
-            token = request.headers["Authorization"].split(" ")[
-                1]  # Bearer <token>
-        if not token:
+        auth_header = request.headers.get("Authorization")
+        if auth_header and auth_header.startswith("Bearer "):
+            token = auth_header.split(" ")[1]
+        else:
             return jsonify({"error": "Token is missing"}), 401
 
         try:
             data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
             current_user = User.query.get(data["user_id"])
-        except:
-            return jsonify({"error": "Token is invalid or expired"}), 401
+        except ExpiredSignatureError:
+            return jsonify({"error": "Token has expired"}), 401
+        except InvalidTokenError:
+            return jsonify({"error": "Token is invalid"}), 401
 
         return f(current_user, *args, **kwargs)
 

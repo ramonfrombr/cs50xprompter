@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: flask_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - backend/.env.production
+    depends_on:
+      - db
+    # In production, avoid bind mounts (volumes) unless absolutely needed
+    volumes:
+      - ./backend/logs:/app/logs # optional: only persist logs
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: runner # use the production stage of your multistage Dockerfile
+    container_name: nextjs_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - frontend/.env.production
+    depends_on:
+      - backend
+    # No source-code mount in prod
+    volumes:
+      - ./frontend/logs:/app/logs # optional
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres_db}
+    ports:
+      - "5432:5432" # ❗ In production, you usually REMOVE this and only expose internally
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
