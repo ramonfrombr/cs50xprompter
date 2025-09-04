@@ -19,8 +19,6 @@ services:
         value: production
       - key: DATABASE_URL
         value: postgres://postgres:password@postgres-db:5432/postgres_db
-    ports:
-      - 5000
 
   - type: web
     name: Frontend
@@ -28,10 +26,8 @@ services:
     dockerfilePath: frontend/Dockerfile
     plan: free
     autoDeploy: true
-    dockerBuildArgs:
-      - key: NEXT_PUBLIC_API_URL
-        value: https://your-backend.onrender.com
-    ports:
-      - 3000
     dependsOn:
       - Backend
+    dockerBuildArgs:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://<backend-service-name>.onrender.com
