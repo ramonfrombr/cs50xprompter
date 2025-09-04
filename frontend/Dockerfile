@@ -10,6 +10,7 @@ RUN npm ci
 # Copy all source
 COPY frontend . 
 
+COPY frontend/.env.production ./
 # Build with Render env vars
 RUN npm run build
 
