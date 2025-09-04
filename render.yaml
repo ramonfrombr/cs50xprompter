@@ -1,9 +1,6 @@
 databases:
   - name: postgres-db
     plan: free
-    user: postgres
-    password: password
-    database: postgres_db
     region: oregon
 
 services:
@@ -17,7 +14,7 @@ services:
       - key: FLASK_ENV
         value: production
       - key: DATABASE_URL
-        value: postgres://postgres:password@postgres-db:5432/postgres_db
+        value: ${{ postgres-db.DATABASE_URL }} # Render injects this automatically
 
   - type: web
     name: Frontend
