@@ -24,4 +24,4 @@ services:
     autoDeploy: true
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: https://backend-59ux.onrender.com/
+        value: https://backend-59ux.onrender.com
