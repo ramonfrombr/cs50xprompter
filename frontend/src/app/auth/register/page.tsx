@@ -11,6 +11,8 @@ export default function RegisterPage() {
   const { token, loading } = useContext(AuthContext);
   const router = useRouter();
 
+  console.log("apiUrl >>> ", apiUrl);
+
   useEffect(() => {
     if (!loading && token) {
       router.replace("/teleprompter");
