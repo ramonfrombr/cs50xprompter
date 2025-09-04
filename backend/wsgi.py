@@ -1,5 +1,5 @@
 from app import create_app, socketio
-from database import db
+from app.database import db
 
 app = create_app()
 

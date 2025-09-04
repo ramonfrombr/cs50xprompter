@@ -3,8 +3,8 @@ from jwt import ExpiredSignatureError, InvalidTokenError
 from functools import wraps
 from datetime import datetime, timedelta, timezone
 from flask import Blueprint, jsonify, request
-from database import db
-from models import User
+from .. import db
+from ..models import User
 
 
 auth = Blueprint("auth", __name__)

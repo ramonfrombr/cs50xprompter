@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
-from database import db
-from app import bcrypt
+from . import db, bcrypt
 
 
 class User(db.Model):
