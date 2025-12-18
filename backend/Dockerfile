@@ -20,11 +20,11 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Copy the rest of the application
 COPY . .
 
-# Expose the port your Flask app runs on
-EXPOSE 5000
-
-# Set environment variable
+# Environment
 ENV FLASK_ENV=production
 
-# Start the app
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
+# Render uses $PORT automatically
+EXPOSE 10000
+
+# Start Eventlet server (NO gunicorn)
+CMD ["python", "wsgi.py"]
