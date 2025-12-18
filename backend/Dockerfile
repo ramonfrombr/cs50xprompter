@@ -27,4 +27,4 @@ EXPOSE 5000
 ENV FLASK_ENV=production
 
 # Start the app
-CMD ["python", "wsgi.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
